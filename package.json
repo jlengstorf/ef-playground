@@ -1,0 +1,18 @@
+{
+  "name": "ef-playground",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.33",
+    "typescript": "^4.5.4",
+    "vite": "^2.9.9"
+  },
+  "dependencies": {
+    "@netlify/functions": "^1.0.0"
+  }
+}
