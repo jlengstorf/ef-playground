@@ -50,6 +50,8 @@ async function getEpisodeCount() {
 }
 
 export default async function (_request: Request, context: Context) {
+  const response = await context.next();
+
   const youtube = getYouTubeSubscribers();
   const twitch = getTwitchFollowers();
   const twitter = getTwitterFollowers();
@@ -61,8 +63,6 @@ export default async function (_request: Request, context: Context) {
   const { followers: twitterFollowers } = await twitter;
   const { posts } = await blog;
   const { episodes } = await lwj;
-
-  const response = await context.next();
 
   return new HTMLRewriter()
     .on('[data-site="youtube"]', {
