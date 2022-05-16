@@ -60,6 +60,7 @@ nav a {
   padding: 0.5rem 1rem;
   text-align: center;
   text-decoration: none;
+  transition: all 0.2s ease-in-out;
 }
 
 nav a:focus,
@@ -79,6 +80,7 @@ nav a:hover svg > path,
 nav a:focus svg > circle,
 nav a:hover svg > circle {
   fill: var(--color-background);
+  transition: all 0.2s ease-in-out;
 }
 
 .count {
