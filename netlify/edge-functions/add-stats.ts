@@ -13,125 +13,23 @@ const formatter = new Intl.NumberFormat('en-US', {
 const apiUrl = new URL(
   Deno.env.get('URL') || 'https://ef-playground.netlify.app/',
 );
-
-async function getStats(endpoint: string, fallback: object) {
-  apiUrl.pathname = endpoint;
-
-  return fetch(apiUrl.toString())
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error(`Failed to fetch ${endpoint}: ${res.status}`);
-      }
-
-      return res;
-    })
-    .then((res) => res.json())
-    .catch(() => fallback);
-}
-
-async function getYouTubeSubscribers() {
-  return getStats('/api/stats/youtube', { subscribers: 0 });
-}
-
-async function getTwitchFollowers() {
-  return getStats('/api/stats/twitch', { followers: 0 });
-}
-
-async function getTwitterFollowers() {
-  return getStats('/api/stats/twitter', { followers: 0 });
-}
-
-async function getPostCount() {
-  return getStats('/api/stats/blog', { posts: 0 });
-}
-
-async function getEpisodeCount() {
-  return getStats('/api/stats/lwj', { episodes: 0 });
-}
+apiUrl.pathname = '/api/stats/all';
 
 export default async function (_request: Request, context: Context) {
-  context.log(`Edge Function start: ${performance.now()}`);
   const response = await context.next();
-
-  context.log(`context.next() complete: ${performance.now()}`);
-
-  const youtube = getYouTubeSubscribers();
-  const twitch = getTwitchFollowers();
-  const twitter = getTwitterFollowers();
-  const blog = getPostCount();
-  const lwj = getEpisodeCount();
-
-  const { subscribers } = await youtube;
-  context.log(`YouTube stats loaded: ${performance.now()}`);
-  const { followers } = await twitch;
-  context.log(`Twitch stats loaded: ${performance.now()}`);
-  const { followers: twitterFollowers } = await twitter;
-  context.log(`Twitter stats loaded: ${performance.now()}`);
-  const { posts } = await blog;
-  context.log(`Blog stats loaded: ${performance.now()}`);
-  const { episodes } = await lwj;
-  context.log(`LWJ stats loaded: ${performance.now()}`);
+  const stats = await fetch(apiUrl.toString()).then((res) => res.json());
 
   return new HTMLRewriter()
-    .on('[data-site="youtube"]', {
+    .on('[data-enrich="true"]', {
       element(element: Element) {
-        if (subscribers > 0) {
+        const site = element.getAttribute('data-site');
+
+        if (site && stats[site] && stats[site].count > 0) {
+          const data = stats[site];
+          const formatted = formatter.format(data.count);
+
           element.append(
-            `<span class="count">${formatter.format(
-              subscribers,
-            )} subscribers</span>`,
-            {
-              html: true,
-            },
-          );
-        }
-      },
-    })
-    .on('[data-site="twitch"]', {
-      element(element: Element) {
-        if (followers > 0) {
-          element.append(
-            `<span class="count">${formatter.format(
-              followers,
-            )} followers</span>`,
-            {
-              html: true,
-            },
-          );
-        }
-      },
-    })
-    .on('[data-site="twitter"]', {
-      element(element: Element) {
-        if (twitterFollowers > 0) {
-          element.append(
-            `<span class="count">${formatter.format(
-              twitterFollowers,
-            )} followers</span>`,
-            {
-              html: true,
-            },
-          );
-        }
-      },
-    })
-    .on('[data-site="blog"]', {
-      element(element: Element) {
-        if (posts > 0) {
-          element.append(
-            `<span class="count">${formatter.format(posts)} posts</span>`,
-            {
-              html: true,
-            },
-          );
-        }
-      },
-    })
-    .on('[data-site="lwj"]', {
-      element(element: Element) {
-        if (episodes > 0) {
-          element.append(
-            `<span class="count">${formatter.format(episodes)} episodes</span>`,
+            `<span class="count">${formatted} ${data.label}</span>`,
             {
               html: true,
             },
