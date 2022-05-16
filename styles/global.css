@@ -1,11 +1,91 @@
+:root {
+  --color-primary: #c10b7e;
+  --color-background: #ffffff;
+  --color-black: #201d29;
+  --color-text: #403c4a;
+}
+
 * {
   box-sizing: border-box;
 }
 
 html {
-  color: #444;
+  color: var(--color-text);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
     Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   font-size: 20px;
   line-height: 1.4;
+}
+
+body {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+  padding: 3rem 0;
+}
+
+main {
+  margin: 0 auto;
+  width: min(90vw, 28rem);
+}
+
+h1 {
+  color: var(--color-black);
+  font-size: 1.25rem;
+  line-height: 1.1;
+  text-align: center;
+}
+
+nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 1rem auto;
+  width: min(100%, 18rem);
+}
+
+nav a {
+  align-items: center;
+  background: #fff;
+  border: 2px solid var(--color-primary);
+  border-radius: 3px;
+  color: var(--color-primary);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 0.25rem;
+  justify-content: center;
+  line-height: 1;
+  padding: 0.5rem 1rem;
+  text-align: center;
+  text-decoration: none;
+}
+
+nav a:focus,
+nav a:hover {
+  background: var(--color-primary);
+  color: var(--color-background);
+}
+
+nav a svg {
+  display: block;
+  height: 1.75rem;
+  width: 1.75rem;
+}
+
+nav a:focus svg > path,
+nav a:hover svg > path,
+nav a:focus svg > circle,
+nav a:hover svg > circle {
+  fill: var(--color-background);
+}
+
+.count {
+  display: block;
+  font-size: 0.625rem;
+  letter-spacing: 0.1em;
+  line-height: 1;
+  text-transform: uppercase;
+  width: 100%;
 }

@@ -1,0 +1,8 @@
+[[redirects]]
+  from = "/api/stats/*"
+  to = "/.netlify/functions/stats-:splat"
+  status = 200
+
+[[edge_functions]]
+  path = "/"
+  function = "add-stats"

@@ -13,6 +13,9 @@
     "vite": "^2.9.9"
   },
   "dependencies": {
-    "@netlify/functions": "^1.0.0"
+    "@jlengstorf/get-twitch-oauth": "^1.0.1",
+    "@netlify/functions": "^1.0.0",
+    "fast-xml-parser": "^4.0.7",
+    "node-fetch": "^3.2.4"
   }
 }
