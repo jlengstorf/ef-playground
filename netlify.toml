@@ -1,6 +1,6 @@
 [[redirects]]
   from = "/api/stats/*"
-  to = "/.netlify/functions/stats-:splat"
+  to = "/.netlify/builders/stats-:splat"
   status = 200
 
 [[edge_functions]]
