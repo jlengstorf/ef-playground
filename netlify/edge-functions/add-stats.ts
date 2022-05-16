@@ -50,7 +50,10 @@ async function getEpisodeCount() {
 }
 
 export default async function (_request: Request, context: Context) {
+  context.log(`Edge Function start: ${performance.now()}`);
   const response = await context.next();
+
+  context.log(`context.next() complete: ${performance.now()}`);
 
   const youtube = getYouTubeSubscribers();
   const twitch = getTwitchFollowers();
@@ -59,10 +62,15 @@ export default async function (_request: Request, context: Context) {
   const lwj = getEpisodeCount();
 
   const { subscribers } = await youtube;
+  context.log(`YouTube stats loaded: ${performance.now()}`);
   const { followers } = await twitch;
+  context.log(`Twitch stats loaded: ${performance.now()}`);
   const { followers: twitterFollowers } = await twitter;
+  context.log(`Twitter stats loaded: ${performance.now()}`);
   const { posts } = await blog;
+  context.log(`Blog stats loaded: ${performance.now()}`);
   const { episodes } = await lwj;
+  context.log(`LWJ stats loaded: ${performance.now()}`);
 
   return new HTMLRewriter()
     .on('[data-site="youtube"]', {
