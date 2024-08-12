@@ -1,8 +1,8 @@
 [[redirects]]
-  from = "/api/stats/*"
-  to = "/.netlify/builders/stats-:splat"
-  status = 200
+from = "/api/stats/*"
+to = "/.netlify/builders/stats-:splat"
+status = 200
 
-[[edge_functions]]
-  path = "/"
-  function = "add-stats"
+# [[edge_functions]]
+#   path = "/"
+#   function = "add-stats"
